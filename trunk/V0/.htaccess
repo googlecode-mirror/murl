@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.murl.fr$ [NC]
+RewriteRule ^(.*)$ http://murl.fr/$1 [R=301,L]
+RewriteRule (.*) index.php
