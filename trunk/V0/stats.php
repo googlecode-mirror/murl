@@ -3,7 +3,14 @@
 $msg .= '<div style="float:left;width:45%">';
 /* Top 10 des clics du jour */
 $msg .= '<h3>Top 10 du jour</h3>';
-$rs = mysql_query('SELECT id,SUM(clics) as cliclic FROM '.STATS_TABLE.' WHERE date=CURRENT_DATE() AND id IN (SELECT DISTINCT id FROM '.URL_TABLE.' WHERE 1) GROUP By id ORDER By cliclic DESC LIMIT 0,10');
+$rs = mysql_query('	SELECT lu.id, SUM( ls.clics ) AS cliclic
+					FROM '.STATS_TABLE.' ls
+					INNER JOIN '.URL_TABLE.' lu 
+						ON ls.id = lu.id
+					WHERE ls.date=CURRENT_DATE()
+					GROUP BY lu.id
+					ORDER BY cliclic DESC
+					LIMIT 0 , 10');
 if(mysql_num_rows($rs))
 {
 	$msg .='<table class="tableau"><tr><th>URL</th><th>Clics</th></tr>';
@@ -32,7 +39,15 @@ $msg .= '</div><div style="float:right;width:45%">';
 
 /* Top 10 Fowever */
 $msg .= '<h3>Top 10 global</h3>';
-$rs = mysql_query('SELECT id,SUM(clics) as cliclic FROM '.STATS_TABLE.' WHERE id IN (SELECT DISTINCT id FROM '.URL_TABLE.' WHERE 1) GROUP By id ORDER By cliclic DESC LIMIT 0,10');
+//$rs = mysql_query('SELECT id,SUM(clics) as cliclic FROM '.STATS_TABLE.' WHERE id IN (SELECT DISTINCT id FROM '.URL_TABLE.' WHERE 1) GROUP By id ORDER By cliclic DESC LIMIT 0,10');
+$rs = mysql_query('	SELECT lu.id, SUM( ls.clics ) AS cliclic
+					FROM '.STATS_TABLE.' ls
+					INNER JOIN '.URL_TABLE.' lu 
+						ON ls.id = lu.id
+					WHERE 1
+					GROUP BY lu.id
+					ORDER BY cliclic DESC
+					LIMIT 0 , 10');
 if(mysql_num_rows($rs))
 {
 	$msg .='<table class="tableau"><tr><th>URL</th><th>Clics</th></tr>';
